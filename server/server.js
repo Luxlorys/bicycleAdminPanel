@@ -12,6 +12,7 @@ async function connectionToDatabase() {
         console.log("connected to db");
     } catch (error) {
         console.error("Error connecting to the database:", error);
+        process.exit(1);
     }
 }
 

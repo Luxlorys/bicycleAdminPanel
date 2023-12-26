@@ -4,17 +4,17 @@ const mongoose = require("mongoose");
 const bicycleSchema = new Schema({
     name: {
         type: String,
-        required: true,
+        required: true
     },
     type: {
         type: String,
-        required: true,
+        required: true
     },
     color: {
         type: String,
         required: true,
         default: "black",
-        enum: ["black", "red", "white"],
+        enum: ["black", "red", "white"]
     },
     wheel_size: {
         type: Number,
@@ -22,13 +22,18 @@ const bicycleSchema = new Schema({
         default: 16,
         enum: [12, 16, 20, 24, 26, 27]
     },
+    status: {
+        type: String,
+        default: "available",
+        enum: ["available", "busy", "unavailable"]
+    },
     price: {
         type: Number,
-        required: true,
+        required: true
     },
     description: {
         type: String,
-        required: true,
+        required: true
     }
 });
 
