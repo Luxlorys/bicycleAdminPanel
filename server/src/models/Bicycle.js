@@ -13,8 +13,6 @@ const bicycleSchema = new Schema({
     color: {
         type: String,
         required: true,
-        default: "black",
-        enum: ["black", "red", "white"]
     },
     wheel_size: {
         type: Number,

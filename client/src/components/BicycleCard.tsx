@@ -1,6 +1,6 @@
 import Bicycle from "../models/Bicycle.ts";
 import {
-    Button, ButtonGroup,
+    ButtonGroup,
     Card,
     CardBody,
     CardFooter,
@@ -8,6 +8,8 @@ import {
     Heading, Stack,
     Text,
 } from "@chakra-ui/react";
+import ChangeBicycleStatusButton from "./ChangeBicycleStatusButton.tsx";
+import DeleteBicycleButton from "./DeleteBicycleButton.tsx";
 
 interface BicycleCardProps {
     bicycle: Bicycle;
@@ -44,12 +46,8 @@ export default function BicycleCard({ bicycle }: BicycleCardProps) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <Button variant='outline' colorScheme='teal'>
-                        Status
-                    </Button>
-                    <Button variant='ghost' colorScheme='red'>
-                        Delete
-                    </Button>
+                    <ChangeBicycleStatusButton status='available'/>
+                    <DeleteBicycleButton bicycle={bicycle} />
                 </ButtonGroup>
             </CardFooter>
         </Card>

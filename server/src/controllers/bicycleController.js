@@ -13,7 +13,11 @@ const createBicycle = async (req, res) => {
 const getBicycles = async (req, res) => {
     try {
         const data = await bicycleService.getBicycles();
-        res.json({ bicycles: data })
+
+        if (!data || data.length === 0) {
+            res.json({ message: 'no bicycles found'})
+        }
+        res.json(data)
 
     } catch (error) {
         res.status(400).json({ message: 'Internal Server Error', errorMessage: error.message })

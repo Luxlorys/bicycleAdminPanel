@@ -1,5 +1,5 @@
-import {Box, Button, Flex, Heading, Spacer} from "@chakra-ui/react";
-import {AddIcon} from "@chakra-ui/icons";
+import {Box, Flex, Heading, Spacer} from "@chakra-ui/react";
+import NewBicycleButton from "./NewBicycleButton.tsx";
 
 export function Header() {
     return (
@@ -9,7 +9,7 @@ export function Header() {
             </Box>
             <Spacer />
             <Box>
-                <Button leftIcon={<AddIcon />} colorScheme='teal' variant='outline'>new bicycle</Button>
+                <NewBicycleButton />
             </Box>
         </Flex>
     );

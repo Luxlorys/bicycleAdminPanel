@@ -37,7 +37,7 @@ const getBicycleById = async (id) => {
 };
 const getBicycles = async () => {
     try {
-        return await Bicycle.find();
+        return await Bicycle.find({});
     } catch (error) {
         throw new Error(`failed to get bicycle: ${error.message}`);
     }
