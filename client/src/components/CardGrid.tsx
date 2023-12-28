@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import {Heading, SimpleGrid} from "@chakra-ui/react";
 import BicycleCard from "./BicycleCard.tsx";
 import Bicycle from "../models/Bicycle.ts";
 import BicycleApi from "../services/bicycleApi.ts";
@@ -30,13 +30,15 @@ export default function CardGrid({ api }: BicycleApiProps) {
         return () => {
             isMounted = false;
         };
-    }, []);
+    }, [api]);
 
     return (
         <SimpleGrid m={10} spacing={10} templateColumns="repeat(auto-fill, minmax(250px, 1fr))">
-            {bicycles.map((bicycle) => (
+            {bicycles.length > 0 ? bicycles.map((bicycle) => (
                 <BicycleCard key={bicycle._id} bicycle={bicycle} />
-            ))}
+            )) : (<Heading>
+                No bicycles in database
+            </Heading>)}
         </SimpleGrid>
     );
 }

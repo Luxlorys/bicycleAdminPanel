@@ -9,6 +9,20 @@ import {
 } from "@chakra-ui/react";
 import {AddIcon} from "@chakra-ui/icons";
 import {useState} from "react";
+import Bicycle from "../models/Bicycle.ts";
+import BicycleApi from "../services/bicycleApi.ts";
+
+
+const inputValidator = (bicycle: Bicycle) => {
+    return (
+        !bicycle.name ||
+        !bicycle.type ||
+        !bicycle.wheel_size ||
+        !bicycle.color ||
+        !bicycle.description
+    );
+};
+
 
 export default function NewBicycleButton() {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -20,9 +34,66 @@ export default function NewBicycleButton() {
     const [bicycleWheelSize, setBicycleWheelSize] = useState<string>("");
     const [bicycleDescription, setBicycleDescription] = useState<string>("");
 
-    async function handleSaveButton() {
+    const api = new BicycleApi();
+    const toast = useToast();
 
+    async function handleSaveButton() {
+        try {
+            const priceAsNumber = parseFloat(bicyclePrice);
+
+            if (priceAsNumber || isNaN(priceAsNumber)) {
+                toast({
+                    title: "Invalid Price",
+                    description: "Please enter a valid numeric price.",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
+                return;
+            }
+
+            const bicycle: Bicycle = {
+                name: bicycleName,
+                color: bicycleColor,
+                description: bicycleDescription,
+                price: bicyclePrice,
+                type: bicycleType,
+                wheel_size: bicycleWheelSize,
+            };
+
+            if (inputValidator(bicycle)) {
+                toast({
+                    title: "Fill all fields",
+                    description: "Please enter all data",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                });
+                return; // Stop execution if validation fails
+            }
+
+            console.log(bicycle);
+            await api.post(bicycle);
+            console.log('saved');
+            toast({
+                title: "Saved successfully",
+                status: "success",
+                onCloseComplete: () => {
+                    window.location.reload();
+                },
+            });
+        } catch (error) {
+            toast({
+                title: 'Failed saving the bicycle',
+                status: "error",
+                onCloseComplete: () => {
+                    window.location.reload();
+                },
+            });
+            console.log(error);
+        }
     }
+
 
     return (
         <>
@@ -31,7 +102,7 @@ export default function NewBicycleButton() {
                 variant='ghost'
                 colorScheme='teal'
                 leftIcon={<AddIcon />}
-                >
+            >
                 Open Modal
             </Button>
 
@@ -45,39 +116,39 @@ export default function NewBicycleButton() {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
 
-                        <FormControl>
+                        <FormControl isRequired>
                             <FormLabel>Name</FormLabel>
                             <Input onChange={(e) => setBicycleName(e.target.value)} placeholder='Bicycle name' />
                         </FormControl>
 
-                        <FormControl mt={4}>
+                        <FormControl isRequired mt={4}>
                             <FormLabel>Type</FormLabel>
                             <Input onChange={(e) => setBicycleType(e.target.value)} placeholder='Bicycle type' />
                         </FormControl>
 
-                        <FormControl mt={4}>
+                        <FormControl isRequired mt={4}>
                             <FormLabel>Color</FormLabel>
                             <Input onChange={(e) => setBicycleColor(e.target.value)} placeholder='Bicycle color' />
                         </FormControl>
 
-                        <FormControl mt={4}>
+                        <FormControl isRequired mt={4}>
                             <FormLabel>Price</FormLabel>
                             <Input onChange={(e) => setBicyclePrice(e.target.value)} placeholder='Bicycle price' />
                         </FormControl>
 
-                        <FormControl mt={4}>
+                        <FormControl isRequired mt={4}>
                             <FormLabel>Wheel size</FormLabel>
-                            <Select onChange={(e) => setBicycleWheelSize(e.target.value)} placeholder='Size'>
-                                <option value='option1'>12</option>
-                                <option value='option1'>16</option>
-                                <option value='option1'>20</option>
-                                <option value='option2'>24</option>
-                                <option value='option3'>26</option>
-                                <option value='option3'>27</option>
+                            <Select onChange={(e) => setBicycleWheelSize(e.target.value)} placeholder='Select wheel size'>
+                                <option value='12'>12</option>
+                                <option value='16'>16</option>
+                                <option value='20'>20</option>
+                                <option value='24'>24</option>
+                                <option value='26'>26</option>
+                                <option value='27'>27</option>
                             </Select>
                         </FormControl>
 
-                        <FormControl mt={4}>
+                        <FormControl isRequired mt={4}>
                             <FormLabel>Description</FormLabel>
                             <Textarea onChange={(e) => setBicycleDescription(e.target.value)} placeholder='Description' size='sm' />
                         </FormControl>
@@ -85,7 +156,7 @@ export default function NewBicycleButton() {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='teal' variant='outline' mr={3}>
+                        <Button onClick={handleSaveButton} colorScheme='teal' variant='outline' mr={3}>
                             Save
                         </Button>
                         <Button onClick={onClose} variant='ghost'>Cancel</Button>

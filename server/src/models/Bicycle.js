@@ -15,15 +15,15 @@ const bicycleSchema = new Schema({
         required: true,
     },
     wheel_size: {
-        type: Number,
+        type: String,
         required: true,
         default: 16,
         enum: [12, 16, 20, 24, 26, 27]
     },
     status: {
         type: String,
-        default: "available",
-        enum: ["available", "busy", "unavailable"]
+        default: "Available",
+        enum: ["Available", "Busy", "Unavailable"]
     },
     price: {
         type: Number,

@@ -3,8 +3,8 @@ export default interface Bicycle {
     name: string;
     type: string;
     color: string;
-    price: number;
-    wheel_size: 12 | 16 | 20 | 24 | 26 | 27;
+    price: string;
+    wheel_size: string
     description: string;
-    status?: 'available' | 'busy' | 'unavailable';
+    status?: string;
 }

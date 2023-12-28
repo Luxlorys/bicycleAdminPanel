@@ -12,6 +12,12 @@ export default class BicycleApi implements api {
                 },
                 body: JSON.stringify(bicycle)
             });
+
+            if (!response.ok) {
+                console.error(`POST request failed with status ${response.status}`);
+                throw new Error(`POST request failed with status: ${response.status}`);
+            }
+
             const data = await response.json();
             console.log('Data successfully sent:', data);
             return data;
@@ -20,6 +26,7 @@ export default class BicycleApi implements api {
             throw error;
         }
     }
+
 
     async getAll(): Promise<Bicycle[]> {
         try {
@@ -46,11 +53,6 @@ export default class BicycleApi implements api {
         }
     }
 
-
-    getById(): Promise<Bicycle> {
-        return Promise.resolve(undefined);
-    }
-
     async delete(bicycle: Bicycle): Promise<Bicycle> {
         try {
             const response = await fetch(`http://localhost:3001/api/bicycles/${bicycle._id}/delete`, {
@@ -65,6 +67,28 @@ export default class BicycleApi implements api {
             return await response.json();
         } catch (error) {
             console.error('Failed to delete bicycle', error);
+            throw error;
+        }
+    }
+
+    async changeStatus(bicycle: Bicycle): Promise<Bicycle> {
+        try {
+            const response = await fetch(`http://localhost:3001/api/bicycles/${bicycle._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: bicycle.status }), // Include the status in the request body
+            });
+
+            if (!response.ok) {
+                console.error(`PUT request failed with status ${response.status}`);
+                throw new Error(`PUT request failed with status: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Failed to change status', error);
             throw error;
         }
     }

@@ -46,7 +46,7 @@ export default function BicycleCard({ bicycle }: BicycleCardProps) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <ChangeBicycleStatusButton status='available'/>
+                    <ChangeBicycleStatusButton bicycle={bicycle}/>
                     <DeleteBicycleButton bicycle={bicycle} />
                 </ButtonGroup>
             </CardFooter>
