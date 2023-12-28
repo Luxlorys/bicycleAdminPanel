@@ -15,14 +15,14 @@ import BicycleApi from "../services/bicycleApi.ts";
 
 const inputValidator = (bicycle: Bicycle) => {
     return (
-        !bicycle.name ||
-        !bicycle.type ||
+        !bicycle.name || bicycle.name.length < 5 ||
+        !bicycle.type || bicycle.type.length < 5 ||
         !bicycle.wheel_size ||
-        !bicycle.color ||
-        !bicycle.description
+        !bicycle.color || bicycle.color.length < 5 ||
+        !bicycle.description || bicycle.description.length < 5 ||
+        !bicycle.price
     );
 };
-
 
 export default function NewBicycleButton() {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -41,7 +41,7 @@ export default function NewBicycleButton() {
         try {
             const priceAsNumber = parseFloat(bicyclePrice);
 
-            if (priceAsNumber || isNaN(priceAsNumber)) {
+            if (!isFinite(priceAsNumber) || isNaN(priceAsNumber) || priceAsNumber <= 0) {
                 toast({
                     title: "Invalid Price",
                     description: "Please enter a valid numeric price.",
@@ -64,7 +64,7 @@ export default function NewBicycleButton() {
             if (inputValidator(bicycle)) {
                 toast({
                     title: "Fill all fields",
-                    description: "Please enter all data",
+                    description: "Text fields should be at least 5 characters",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
